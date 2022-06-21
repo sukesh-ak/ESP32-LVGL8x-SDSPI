@@ -12,7 +12,7 @@
 #include "storage_helper.hpp"
 
 char txt[100];
-static void once_timer_callback(void* arg);
+// static void once_timer_callback(void* arg);
 static void periodic_timer_callback(void* arg);
 
 extern "C"
@@ -27,6 +27,7 @@ void app_main(void)
     lv_display_init(); // Configure LVGL
 
 /*********************** [START] TIMERS FOR TESTING *********************/
+
     // Timer with callback every 5second
     // Just show card details
     const esp_timer_create_args_t periodic_timer_args = {
@@ -36,21 +37,22 @@ void app_main(void)
 
     // Timer which trigger only once
     // Initialize SDSPI from this timer after 2seconds
-    const esp_timer_create_args_t once_timer_args = {
-            .callback = &once_timer_callback,
-            .name = "once"
-    };
+    // const esp_timer_create_args_t once_timer_args = {
+    //         .callback = &once_timer_callback,
+    //         .name = "once"
+    // };
 
-    esp_timer_handle_t once_timer;
+    // esp_timer_handle_t once_timer;
     esp_timer_handle_t periodic_timer;
 
     // Create the timer
-    ESP_ERROR_CHECK(esp_timer_create(&once_timer_args, &once_timer));
+    // ESP_ERROR_CHECK(esp_timer_create(&once_timer_args, &once_timer));
     ESP_ERROR_CHECK(esp_timer_create(&periodic_timer_args, &periodic_timer));
 
     // Start the timers 
-    ESP_ERROR_CHECK(esp_timer_start_once(once_timer, 1000000)); 
+    //ESP_ERROR_CHECK(esp_timer_start_once(once_timer, 1000000)); 
     ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, 5000000));
+    
   /*********************** [END] TIMERS FOR TESTING *********************/
 
     // CONTENT PANEL W/H = 90%, Color = GREY, Border = RED
@@ -68,6 +70,12 @@ void app_main(void)
     lv_label_set_text(label, txt);
     lv_obj_align(label, LV_ALIGN_CENTER, 0, 0);
 
+    // Call lv_timer_handler() atleast once before 
+    // initializing SDSPI on the same shared SPI bus for screen refresh
+    // Otherwise screen gets a glitch
+    lv_timer_handler();
+    init_sdspi(); // SD SPI
+
     while (1)
     {
         lv_timer_handler(); // let the GUI do its work
@@ -84,6 +92,7 @@ void app_main(void)
 */    
 }
 
+// Initialize SD SPI
 static void once_timer_callback(void* arg)
 {
     int64_t time_since_boot = esp_timer_get_time();
@@ -91,9 +100,10 @@ static void once_timer_callback(void* arg)
     init_sdspi(); // SD SPI
 }
 
+// Print SD Card info - SD SPI
 static void periodic_timer_callback(void* arg)
 {
     int64_t time_since_boot = esp_timer_get_time();
-    ESP_LOGI(TAG, "Card info every 2s, time since boot: %lld us", time_since_boot);
+    ESP_LOGI(TAG, "Card info every 5s, time since boot: %lld us", time_since_boot);
     sdmmc_card_print_info(stdout, sdcard);
 }
