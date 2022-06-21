@@ -6,6 +6,7 @@ static const char *TAG = "SDSPI";
 // #define PIN_NUM_MOSI GPIO_NUM_35
 // #define PIN_NUM_CLK  GPIO_NUM_36
 #define PIN_NUM_CS   GPIO_NUM_33
+static sdmmc_card_t* sdcard;
 
 bool init_sdspi()
 {
@@ -28,9 +29,9 @@ bool init_sdspi()
         .allocation_unit_size = 16 * 1024
     };
 
-    sdmmc_card_t* card;
+    //sdmmc_card_t* card;
     ESP_LOGI(TAG, "Mounting filesystem");
-    esp_err_t ret = esp_vfs_fat_sdspi_mount(MOUNT_POINT, &host, &device_config, &mount_config, &card);
+    esp_err_t ret = esp_vfs_fat_sdspi_mount(MOUNT_POINT, &host, &device_config, &mount_config, &sdcard);
     if (ret != ESP_OK) {
         if (ret == ESP_FAIL) {
             ESP_LOGE(TAG, "Failed to mount filesystem. "
@@ -46,7 +47,7 @@ bool init_sdspi()
     ESP_LOGI(TAG, "Filesystem mounted");
 
     // Card has been initialized, print its properties
-    sdmmc_card_print_info(stdout, card);
+    sdmmc_card_print_info(stdout, sdcard);
 
     return true;
 }
