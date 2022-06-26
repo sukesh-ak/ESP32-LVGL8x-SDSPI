@@ -3,22 +3,24 @@
 #include "esp_vfs_fat.h"
 #include "sdmmc_cmd.h"
 
+#define HEADER_HEIGHT 30 
+#define FOOTER_HEIGHT 30 
+
 #define LGFX_USE_V1
 #include <LovyanGFX.hpp>
 
-#include "FeatherS3_ILI9341_conf.h" // Custom TFT configuration
+//#include "FeatherS3_ILI9341_conf.h"   // Custom TFT configuration
+#include "WT32SCO1_conf.h"              // WT32-SC01 auto config
 
 #include "display_helper.hpp"
 #include "storage_helper.hpp"
 
-char txt[100];
-// static void once_timer_callback(void* arg);
+#include <gui.hpp>
+
+static void once_timer_callback(void* arg);
 static void periodic_timer_callback(void* arg);
 
-extern "C"
-{
-    void app_main();
-}
+extern "C" { void app_main(); }
 
 void app_main(void)
 {
@@ -27,54 +29,50 @@ void app_main(void)
     lv_display_init(); // Configure LVGL
 
 /*********************** [START] TIMERS FOR TESTING *********************/
-
-    // Timer with callback every 5second
-    // Just show card details
+/*
+    //Timer with callback every 5second
+    //Just show card details
     const esp_timer_create_args_t periodic_timer_args = {
             .callback = &periodic_timer_callback,
             .name = "periodic"
     };
 
-    // Timer which trigger only once
-    // Initialize SDSPI from this timer after 2seconds
-    // const esp_timer_create_args_t once_timer_args = {
-    //         .callback = &once_timer_callback,
-    //         .name = "once"
-    // };
+    //Timer which trigger only once
+    //Initialize SDSPI from this timer after 2seconds
+    const esp_timer_create_args_t once_timer_args = {
+            .callback = &once_timer_callback,
+            .name = "once"
+    };
 
-    // esp_timer_handle_t once_timer;
+    esp_timer_handle_t once_timer;
     esp_timer_handle_t periodic_timer;
 
-    // Create the timer
-    // ESP_ERROR_CHECK(esp_timer_create(&once_timer_args, &once_timer));
+    //Create the timer
+    ESP_ERROR_CHECK(esp_timer_create(&once_timer_args, &once_timer));
     ESP_ERROR_CHECK(esp_timer_create(&periodic_timer_args, &periodic_timer));
 
-    // Start the timers 
-    //ESP_ERROR_CHECK(esp_timer_start_once(once_timer, 1000000)); 
+    //Start the timers 
+    ESP_ERROR_CHECK(esp_timer_start_once(once_timer, 1000000)); 
     ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, 5000000));
-    
+*/    
   /*********************** [END] TIMERS FOR TESTING *********************/
 
-    // CONTENT PANEL W/H = 90%, Color = GREY, Border = RED
-    lv_obj_t *contentPanel = lv_obj_create(lv_scr_act());
-    lv_obj_set_size(contentPanel, LV_PCT(90), LV_PCT(90));
-    lv_obj_set_style_bg_color(contentPanel, lv_palette_darken(LV_PALETTE_GREY, 4), 0);
-    lv_obj_set_style_border_width(contentPanel, 5, 0);
-    lv_obj_set_style_border_color(contentPanel, lv_palette_main(LV_PALETTE_RED), 0);
-    lv_obj_align(contentPanel, LV_ALIGN_CENTER, 0, 0);
+    lv_setup_styles();
 
-    // SHOW LVGL VERSION IN THE CENTER
-    sprintf(txt, "LVGL v%d.%d.%d", lv_version_major(), lv_version_minor(), lv_version_patch());
-    lv_obj_t *label = lv_label_create(contentPanel);
-    lv_obj_set_style_text_color(label, lv_palette_main(LV_PALETTE_YELLOW), 0);
-    lv_label_set_text(label, txt);
-    lv_obj_align(label, LV_ALIGN_CENTER, 0, 0);
+    // STATUS / TITLE BAR
+    create_header(lv_scr_act());
+    create_content(lv_scr_act());
+    create_footer(lv_scr_act());
 
-    // Call lv_timer_handler() atleast once before 
-    // initializing SDSPI on the same shared SPI bus for screen refresh
-    // Otherwise screen gets a glitch
-    lv_timer_handler();
-    init_sdspi(); // SD SPI
+#ifdef SD_ENABLED
+    // Initializing SDSPI 
+    if (init_sdspi() != ESP_OK) // SD SPI
+        lv_style_set_text_color(&style_storage, lv_palette_main(LV_PALETTE_RED));
+    else 
+        lv_style_set_text_color(&style_storage, lv_palette_main(LV_PALETTE_GREEN));
+    
+    lv_obj_refresh_style(icon_storage, LV_PART_ANY, LV_STYLE_PROP_ANY);
+#endif
 
     while (1)
     {
@@ -92,18 +90,14 @@ void app_main(void)
 */    
 }
 
-// Initialize SD SPI
 static void once_timer_callback(void* arg)
 {
     int64_t time_since_boot = esp_timer_get_time();
-    ESP_LOGI(TAG, "Initialize SDSPI, time since boot: %lld us", time_since_boot);
-    init_sdspi(); // SD SPI
+    ESP_LOGI(TAG, "Once timer, time since boot: %lld us", time_since_boot);
 }
 
-// Print SD Card info - SD SPI
 static void periodic_timer_callback(void* arg)
 {
     int64_t time_since_boot = esp_timer_get_time();
-    ESP_LOGI(TAG, "Card info every 5s, time since boot: %lld us", time_since_boot);
-    sdmmc_card_print_info(stdout, sdcard);
+    ESP_LOGI(TAG, "Periodic timer, time since boot: %lld us", time_since_boot);
 }

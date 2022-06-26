@@ -7,7 +7,8 @@ static const uint16_t screenWidth = TFT_WIDTH;
 static const uint16_t screenHeight = TFT_HEIGHT ;
 static lv_disp_draw_buf_t draw_buf;
 static lv_color_t buf[screenWidth * 10];
-
+static lv_color_t buf2[screenWidth * 10];
+static lv_disp_t *disp;
 static LGFX lcd;            // declare display variable
 
 /*** Function declaration ***/
@@ -21,11 +22,15 @@ static void lv_tick_task(void *arg);
 
 void lv_display_init()
 {
+    // Setting display to landscape
+    // if (lcd.width() < lcd.height()) 
+    lcd.setRotation(lcd.getRotation() ^ 2);
+        
     lcd.setBrightness(255);
     lcd.setColorDepth(24); 
   
     /* LVGL : Setting up buffer to use for display */
-    lv_disp_draw_buf_init(&draw_buf, buf, NULL, screenWidth * 10);
+    lv_disp_draw_buf_init(&draw_buf, buf, buf2, screenWidth * 10);
 
     /*** LVGL : Setup & Initialize the display device driver ***/
     static lv_disp_drv_t disp_drv;
@@ -34,7 +39,7 @@ void lv_display_init()
     disp_drv.ver_res = screenHeight;
     disp_drv.flush_cb = display_flush;
     disp_drv.draw_buf = &draw_buf;
-	lv_disp_drv_register(&disp_drv);
+	disp = lv_disp_drv_register(&disp_drv);
     
 #ifdef TOUCH_ENABLED    
     //*** LVGL : Setup & Initialize the input device driver ***
@@ -53,6 +58,13 @@ void lv_display_init()
     esp_timer_handle_t periodic_timer;
     ESP_ERROR_CHECK(esp_timer_create(&periodic_timer_args, &periodic_timer));
     ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, LV_TICK_PERIOD_MS * 1000));
+
+    // Setup theme
+    lv_theme_t *th = lv_theme_default_init(NULL, lv_palette_main(LV_PALETTE_BLUE),
+                                           lv_palette_main(LV_PALETTE_RED),
+                                           true, /*Light or dark mode*/
+                                           &lv_font_montserrat_14);
+    lv_disp_set_theme(disp, th); /*Assign the theme to the display*/    
 }
 
 // Display callback to flush the buffer to screen 
@@ -75,3 +87,25 @@ static void lv_tick_task(void *arg)
     (void)arg;
     lv_tick_inc(LV_TICK_PERIOD_MS);
 }
+
+#ifdef TOUCH_ENABLED
+// Touchpad callback to read the touchpad
+void touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
+{
+    uint16_t touchX, touchY;
+    bool touched = lcd.getTouch(&touchX, &touchY);
+
+    if (!touched)
+    {
+        data->state = LV_INDEV_STATE_REL;
+    }
+    else
+    {
+        data->state = LV_INDEV_STATE_PR;
+
+        // Set the coordinates
+        data->point.x = touchX;
+        data->point.y = touchY;
+    }
+}
+#endif
