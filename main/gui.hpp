@@ -166,10 +166,10 @@ static void create_content(lv_obj_t *parent)
     lv_obj_t *label = lv_label_create(contentPanel1);
     //lv_obj_set_style_text_color(label, lv_palette_main(LV_PALETTE_RED), 0);
     lv_obj_align(label, LV_ALIGN_CENTER, 0, 0);
-    lv_label_set_text(label, "Switch Theme : Dark/Light");
+    lv_label_set_text(label, "Theme : Dark");
 
     lv_obj_t *sw = lv_switch_create(contentPanel1);
-    lv_obj_add_event_cb(sw, theme_switch_event_handler, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(sw, theme_switch_event_handler, LV_EVENT_ALL, label);
 
 }
 
@@ -214,6 +214,8 @@ static void theme_switch_event_handler(lv_event_t * e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     lv_obj_t * obj = lv_event_get_target(e);
+    lv_obj_t * udata = (lv_obj_t * )lv_event_get_user_data(e);
+
     if(code == LV_EVENT_VALUE_CHANGED) {
         LV_LOG_USER("State: %s\n", lv_obj_has_state(obj, LV_STATE_CHECKED) ? "On" : "Off");
         if (lv_obj_has_state(obj, LV_STATE_CHECKED))
@@ -224,6 +226,7 @@ static void theme_switch_event_handler(lv_event_t * e)
                                            &lv_font_montserrat_14);      
             bg_theme_color = lv_palette_lighten(LV_PALETTE_GREY, 1);
             lv_disp_set_theme(disp,theme_current);
+            lv_label_set_text(udata, "Theme : Light");
         }
         else
         {
@@ -233,6 +236,7 @@ static void theme_switch_event_handler(lv_event_t * e)
                                 &lv_font_montserrat_14);      
             bg_theme_color = lv_palette_darken(LV_PALETTE_GREY, 4);
             lv_disp_set_theme(disp,theme_current);
+            lv_label_set_text(udata, "Theme : Dark");
         }
     }
 }
