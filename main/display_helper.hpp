@@ -1,7 +1,8 @@
+
+#include "lv_conf.h"
 #include <lvgl.h>
 
 #define LV_TICK_PERIOD_MS 1
-//#define MODE_DARK 1
 
 /*** Setup screen resolution for LVGL ***/
 static const uint16_t screenWidth = TFT_WIDTH;
@@ -27,7 +28,7 @@ void lv_display_init()
 {
     // Setting display to landscape
     // if (lcd.width() < lcd.height()) 
-    //lcd.setRotation(lcd.getRotation() ^ 2);
+    lcd.setRotation(lcd.getRotation() ^ 2);
         
     lcd.setBrightness(128);
     lcd.setColorDepth(24); 

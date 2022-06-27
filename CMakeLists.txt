@@ -5,4 +5,8 @@
 cmake_minimum_required(VERSION 3.5)
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
+
 project(ESP32S3-DISP-SDSPI)
+
+#idf_build_set_property(C_COMPILE_OPTIONS "-DLV_CONF_INCLUDE_SIMPLE" APPEND)
+#idf_build_set_property(C_COMPILE_OPTIONS "-I main/" APPEND)
