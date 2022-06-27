@@ -1,6 +1,7 @@
 #include <lvgl.h>
 
 #define LV_TICK_PERIOD_MS 1
+//#define MODE_DARK 1
 
 /*** Setup screen resolution for LVGL ***/
 static const uint16_t screenWidth = TFT_WIDTH;
@@ -9,6 +10,8 @@ static lv_disp_draw_buf_t draw_buf;
 static lv_color_t buf[screenWidth * 10];
 static lv_color_t buf2[screenWidth * 10];
 static lv_disp_t *disp;
+static lv_theme_t *theme_current;
+static lv_color_t bg_theme_color;
 static LGFX lcd;            // declare display variable
 
 /*** Function declaration ***/
@@ -24,9 +27,9 @@ void lv_display_init()
 {
     // Setting display to landscape
     // if (lcd.width() < lcd.height()) 
-    lcd.setRotation(lcd.getRotation() ^ 2);
+    //lcd.setRotation(lcd.getRotation() ^ 2);
         
-    lcd.setBrightness(255);
+    lcd.setBrightness(128);
     lcd.setColorDepth(24); 
   
     /* LVGL : Setting up buffer to use for display */
@@ -60,11 +63,13 @@ void lv_display_init()
     ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, LV_TICK_PERIOD_MS * 1000));
 
     // Setup theme
-    lv_theme_t *th = lv_theme_default_init(NULL, lv_palette_main(LV_PALETTE_BLUE),
+    theme_current = lv_theme_default_init(disp, lv_palette_main(LV_PALETTE_BLUE),
                                            lv_palette_main(LV_PALETTE_RED),
-                                           true, /*Light or dark mode*/
+                                           LV_USE_THEME_DEFAULT, /*Light or dark mode*/
                                            &lv_font_montserrat_14);
-    lv_disp_set_theme(disp, th); /*Assign the theme to the display*/    
+
+    //lv_disp_set_theme(disp, th); /*Assign the theme to the display*/    
+    bg_theme_color = theme_current->flags & LV_USE_THEME_DEFAULT ? lv_palette_darken(LV_PALETTE_GREY, 4) : lv_palette_lighten(LV_PALETTE_GREY, 1);
 }
 
 // Display callback to flush the buffer to screen 

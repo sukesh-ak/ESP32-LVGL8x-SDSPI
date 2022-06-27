@@ -26,7 +26,7 @@ class LGFX : public lgfx::LGFX_Device
 
 #ifdef TOUCH_ENABLED
     //Prepare an instance that matches the type of touchscreen. 
-	// Need calibration
+	  // Need calibration so touch not working for now
     lgfx::Touch_STMPE610 _touch_instance; 
 #endif
 
