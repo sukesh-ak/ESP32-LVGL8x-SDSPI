@@ -5,6 +5,11 @@
 > 3. [LovyanGFX](https://github.com/lovyan03/LovyanGFX) Display Driver   
 > 4. [LVGL 8.3.0](https://github.com/lvgl/lvgl) UI Widgets   
 
+### Demo of LVGL Widgets 
+> 1. [Unexpected Maker TinyS3](https://esp32s3.com/tinys3.html)   
+> 2. 1.3" TFT - ST7789 240x240
+> 3. [LovyanGFX](https://github.com/lovyan03/LovyanGFX) Display Driver   
+> 4. [LVGL 8.3.0](https://github.com/lvgl/lvgl) UI Widgets   
 
 ### Demo of LVGL Widgets using Wireless Tag WT32-SC01 with Capacitive Touch
 > 1. [Wireless Tag WT32-SC01 (3.5" TFT Touch Display)](https://www.alibaba.com/product-detail/esp32-development-board-WT32-SC01-3_62534911683.html)   

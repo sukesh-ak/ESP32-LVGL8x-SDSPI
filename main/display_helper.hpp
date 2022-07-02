@@ -27,8 +27,7 @@ static void lv_tick_task(void *arg);
 void lv_display_init()
 {
     // Setting display to landscape
-    // if (lcd.width() < lcd.height()) 
-    lcd.setRotation(lcd.getRotation() ^ 2);
+    // if (lcd.width() < lcd.height()) lcd.setRotation(lcd.getRotation() ^ 2);
         
     lcd.setBrightness(128);
     lcd.setColorDepth(24); 

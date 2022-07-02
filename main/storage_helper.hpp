@@ -36,19 +36,19 @@ bool init_sdspi()
         if (ret == ESP_FAIL) {
             ESP_LOGE(TAG, "Failed to mount filesystem. "
                      "If you want the card to be formatted, set the CONFIG_EXAMPLE_FORMAT_IF_MOUNT_FAILED menuconfig option.");
-            return false;
+            return ESP_FAIL;
         } else {
             ESP_LOGE(TAG, "Failed to initialize the card (%s). "
                      "Make sure SD card lines have pull-up resistors in place.", esp_err_to_name(ret));
-            return false;
+            return ESP_FAIL;
         }
-        return false;
+        return ESP_FAIL;
     }
     ESP_LOGI(TAG, "Filesystem mounted");
 
     // Card has been initialized, print its properties
     sdmmc_card_print_info(stdout, sdcard);
 
-    return true;
+    return ESP_OK;
 }
 
