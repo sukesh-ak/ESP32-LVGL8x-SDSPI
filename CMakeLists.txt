@@ -10,10 +10,13 @@ include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 set(COMPONENTS bootloader esptool_py main)
 
 #LVGL custom config file setup
-idf_build_set_property(C_COMPILE_OPTIONS "-DLV_CONF_INCLUDE_SIMPLE=1" APPEND)
-idf_build_set_property(C_COMPILE_OPTIONS "-DLV_CONF_PATH= ${CMAKE_SOURCE_DIR}/main/lv_conf.h" APPEND)
+idf_build_set_property(COMPILE_OPTIONS "-DLV_CONF_INCLUDE_SIMPLE=1" APPEND)
+idf_build_set_property(COMPILE_OPTIONS "-DLV_CONF_PATH= ${CMAKE_SOURCE_DIR}/main/lv_conf.h" APPEND)
 
 project(ESP32S3-DISP-SDSPI)
+
+# Enable colors for compile output
+idf_build_set_property(COMPILE_OPTIONS "-fdiagnostics-color=always" APPEND)
 
 message(STATUS "--------------Compile Info------------")
 message(STATUS "IDF_PATH = ${IDF_PATH}")

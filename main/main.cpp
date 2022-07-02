@@ -16,6 +16,7 @@
 #include "FeatherS3_ILI9341_conf.h"   // Custom TFT configuration
 //#include "WT32SCO1_conf.h"              // WT32-SC01 auto config
 //#include "TinyS3_ST7789_conf.h"
+//#include "ProS3_ST7735S_conf.h"
 
 #include "display_helper.hpp"
 #include "storage_helper.hpp"
