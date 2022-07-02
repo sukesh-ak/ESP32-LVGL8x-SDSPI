@@ -52,7 +52,7 @@ void lv_setup_styles()
 {
     font_symbol = &lv_font_montserrat_14;
     font_normal = &lv_font_montserrat_14;
-    font_large = &lv_font_montserrat_20;
+    font_large = &lv_font_montserrat_16;
     
     // DASHBOARD TITLE
     lv_style_init(&style_title);

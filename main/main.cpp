@@ -1,5 +1,3 @@
-//#define LV_CONF_INCLUDE_SIMPLE
-//#define LV_CONF_PATH "lv_conf.h"
 
 #include <stdio.h>
 #include "esp_log.h"
