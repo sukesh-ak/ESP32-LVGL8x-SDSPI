@@ -14,8 +14,8 @@ static const char *TAG = "lvgl_gui";
 #include <LovyanGFX.hpp>
 
 // Enable one of the device/display from below
-//#include "FeatherS3_ILI9341_conf.h"   // Custom TFT configuration
-#include "WT32SCO1_conf.h"              // WT32-SC01 auto config
+#include "FeatherS3_ILI9341_conf.h"   // Custom TFT configuration
+//#include "WT32SCO1_conf.h"              // WT32-SC01 auto config
 //#include "TinyS3_ST7789_conf.h"
 //#include "ProS3_ST7735S_conf.h"
 
@@ -85,16 +85,8 @@ void app_main(void)
     lvgl_release();
 #endif
 
-    // while (1)
-    // {
-    //     lv_timer_handler(); // let the GUI do its work
-    //     //lv_timer_handler_run_in_period(5); /* run lv_timer_handler() every 5ms */
-    //    vTaskDelay(10);
-    // }
-
 /*
-    // Won't reach here but just for sanity :)
-    // stop and delete the timers
+    // How to stop and delete the timers
     ESP_ERROR_CHECK(esp_timer_stop(periodic_timer));
     ESP_ERROR_CHECK(esp_timer_delete(periodic_timer));
     ESP_ERROR_CHECK(esp_timer_stop(once_timer));
@@ -107,9 +99,10 @@ static void once_timer_callback(void* arg)
 {
     int64_t time_since_boot = esp_timer_get_time();
     ESP_LOGI(TAG, "Once timer, time since boot: %lld us", time_since_boot);
+
+    // Rotating the screen 180 deg just once
     lvgl_acquire();
-    lv_style_set_text_color(&style_storage, lv_palette_main(LV_PALETTE_GREEN));
-    lv_obj_refresh_style(icon_storage, LV_PART_ANY, LV_STYLE_PROP_ANY);
+    lv_disp_set_rotation(disp, LV_DISP_ROT_180);
     lvgl_release();
 }
 
@@ -118,6 +111,7 @@ static void periodic_timer_callback(void* arg)
     int64_t time_since_boot = esp_timer_get_time();
     ESP_LOGI(TAG, "Periodic timer, time since boot: %lld us", time_since_boot);
 
+    // Just blinking the Wifi icon between GREY & BLUE
     if (wifi_on)
     {
         lvgl_acquire();

@@ -79,6 +79,7 @@ esp_err_t lv_display_init()
     disp_drv.ver_res = screenHeight;
     disp_drv.flush_cb = display_flush;
     disp_drv.draw_buf = &draw_buf;
+    disp_drv.sw_rotate = 1;
     disp = lv_disp_drv_register(&disp_drv);
 
 #ifdef TOUCH_ENABLED
@@ -161,6 +162,7 @@ static void gui_task(void *args)
         /* Try to take the semaphore, call lvgl related function on success */
         if (pdTRUE == xSemaphoreTake(xGuiSemaphore, portMAX_DELAY)) {
             lv_task_handler();
+            //lv_timer_handler_run_in_period(5); /* run lv_timer_handler() every 5ms */
             xSemaphoreGive(xGuiSemaphore);
         }
     }
