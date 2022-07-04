@@ -19,8 +19,8 @@ static const char *TAG = "lvgl_gui";
 //#include "conf_TinyS3_ST7789.h"
 //#include "conf_ProS3_ST7735S.h"
 
-#include "display_helper.hpp"
-#include "storage_helper.hpp"
+#include "helper_display.hpp"
+#include "helper_storage.hpp"
 
 #include <gui.hpp>
 
