@@ -1,4 +1,5 @@
 //#define TOUCH_ENABLED
+//#define RTOUCH
 #define SD_ENABLED
 #define SPI_MODE 0
 

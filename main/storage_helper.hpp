@@ -1,4 +1,4 @@
-static const char *TAG = "SDSPI";
+//static const char *TAG = "SDSPI";
 
 #define MOUNT_POINT "/sdcard"
 

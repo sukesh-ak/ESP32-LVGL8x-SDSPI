@@ -4,7 +4,8 @@
 #include "esp_vfs_fat.h"
 #include "sdmmc_cmd.h"
 
-//#define ENABLE_TEST_TIMER   // Enable/Disable TIMER used for testing
+static const char *TAG = "lvgl_gui";
+#define ENABLE_TEST_TIMER   // Enable/Disable TIMER used for testing
 
 #define HEADER_HEIGHT 30 
 #define FOOTER_HEIGHT 30 
@@ -13,8 +14,8 @@
 #include <LovyanGFX.hpp>
 
 // Enable one of the device/display from below
-#include "FeatherS3_ILI9341_conf.h"   // Custom TFT configuration
-//#include "WT32SCO1_conf.h"              // WT32-SC01 auto config
+//#include "FeatherS3_ILI9341_conf.h"   // Custom TFT configuration
+#include "WT32SCO1_conf.h"              // WT32-SC01 auto config
 //#include "TinyS3_ST7789_conf.h"
 //#include "ProS3_ST7735S_conf.h"
 
@@ -28,13 +29,18 @@ static void once_timer_callback(void* arg);
 static void periodic_timer_callback(void* arg);
 #endif
 
+static bool wifi_on = false;
+
 extern "C" { void app_main(); }
 
 void app_main(void)
 {
     lcd.init();        // Initialize LovyanGFX
     lv_init();         // Initialize lvgl
-    lv_display_init(); // Configure LVGL
+    if (lv_display_init() != ESP_OK) // Configure LVGL
+    {
+        ESP_LOGE(TAG, "LVGL setup failed!!!");
+    }
 
 #ifdef ENABLE_TEST_TIMER
 /*********************** [START] TIMERS FOR TESTING *********************/
@@ -46,8 +52,7 @@ void app_main(void)
     };
     esp_timer_handle_t once_timer;
     ESP_ERROR_CHECK(esp_timer_create(&once_timer_args, &once_timer));
-    ESP_ERROR_CHECK(esp_timer_start_once(once_timer, 1000000)); 
-
+    ESP_ERROR_CHECK(esp_timer_start_once(once_timer, 5000000)); 
 
     // Timer which trigger periodically
     const esp_timer_create_args_t periodic_timer_args = {
@@ -57,7 +62,7 @@ void app_main(void)
 
     esp_timer_handle_t periodic_timer;
     ESP_ERROR_CHECK(esp_timer_create(&periodic_timer_args, &periodic_timer));
-    ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, 5000000));
+    ESP_ERROR_CHECK(esp_timer_start_periodic(periodic_timer, 1000000));
   
   /*********************** [END] TIMERS FOR TESTING *********************/
 #endif
@@ -69,6 +74,7 @@ void app_main(void)
     create_footer(lv_scr_act());
 
 #ifdef SD_ENABLED
+    lvgl_acquire();
     // Initializing SDSPI 
     if (init_sdspi() != ESP_OK) // SD SPI
         lv_style_set_text_color(&style_storage, lv_palette_main(LV_PALETTE_RED));
@@ -76,13 +82,15 @@ void app_main(void)
         lv_style_set_text_color(&style_storage, lv_palette_main(LV_PALETTE_GREEN));
     
     lv_obj_refresh_style(icon_storage, LV_PART_ANY, LV_STYLE_PROP_ANY);
+    lvgl_release();
 #endif
-    while (1)
-    {
-        lv_timer_handler(); // let the GUI do its work
-        //lv_timer_handler_run_in_period(5); /* run lv_timer_handler() every 5ms */
-        vTaskDelay(1);
-    }
+
+    // while (1)
+    // {
+    //     lv_timer_handler(); // let the GUI do its work
+    //     //lv_timer_handler_run_in_period(5); /* run lv_timer_handler() every 5ms */
+    //    vTaskDelay(10);
+    // }
 
 /*
     // Won't reach here but just for sanity :)
@@ -99,11 +107,32 @@ static void once_timer_callback(void* arg)
 {
     int64_t time_since_boot = esp_timer_get_time();
     ESP_LOGI(TAG, "Once timer, time since boot: %lld us", time_since_boot);
+    lvgl_acquire();
+    lv_style_set_text_color(&style_storage, lv_palette_main(LV_PALETTE_GREEN));
+    lv_obj_refresh_style(icon_storage, LV_PART_ANY, LV_STYLE_PROP_ANY);
+    lvgl_release();
 }
 
 static void periodic_timer_callback(void* arg)
 {
     int64_t time_since_boot = esp_timer_get_time();
     ESP_LOGI(TAG, "Periodic timer, time since boot: %lld us", time_since_boot);
+
+    if (wifi_on)
+    {
+        lvgl_acquire();
+        lv_style_set_text_color(&style_wifi, lv_palette_main(LV_PALETTE_BLUE));
+        lv_obj_refresh_style(icon_wifi, LV_PART_ANY, LV_STYLE_PROP_ANY);
+        lvgl_release();
+        wifi_on = !wifi_on;
+    }
+    else
+    {
+        lvgl_acquire();
+        lv_style_set_text_color(&style_wifi, lv_palette_main(LV_PALETTE_GREY));
+        lv_obj_refresh_style(icon_wifi, LV_PART_ANY, LV_STYLE_PROP_ANY);
+        lvgl_release();
+        wifi_on = !wifi_on;
+    }
 }
 #endif
