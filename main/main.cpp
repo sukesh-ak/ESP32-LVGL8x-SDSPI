@@ -14,10 +14,10 @@ static const char *TAG = "lvgl_gui";
 #include <LovyanGFX.hpp>
 
 // Enable one of the device/display from below
-//#include "FeatherS3_ILI9341_conf.h"   // Custom TFT configuration
-#include "WT32SCO1_conf.h"              // WT32-SC01 auto config
-//#include "TinyS3_ST7789_conf.h"
-//#include "ProS3_ST7735S_conf.h"
+//#include "conf_FeatherS3_ILI9341.h"   // Custom TFT configuration
+#include "conf_WT32SCO1.h"              // WT32-SC01 auto config
+//#include "conf_TinyS3_ST7789.h"
+//#include "conf_ProS3_ST7735S.h"
 
 #include "display_helper.hpp"
 #include "storage_helper.hpp"
