@@ -22,6 +22,8 @@ static lv_obj_t *label_message;
 
 static lv_obj_t *icon_storage;
 static lv_obj_t *icon_wifi;
+static lv_obj_t *icon_battery;
+
 
 /******************
  *  LVL STYLES
@@ -30,6 +32,8 @@ static lv_style_t style_message;
 static lv_style_t style_title;
 static lv_style_t style_storage;
 static lv_style_t style_wifi;
+static lv_style_t style_battery;
+
 
 /******************
  *  LVL ANIMATION
@@ -60,19 +64,23 @@ void lv_setup_styles()
     lv_style_set_align(&style_title, LV_ALIGN_LEFT_MID);
     lv_style_set_pad_left(&style_title, 15);
 
+    // BATTERY
+    lv_style_init(&style_battery);
+    lv_style_set_text_font(&style_battery, font_symbol);
+    lv_style_set_align(&style_battery, LV_ALIGN_RIGHT_MID);
+    lv_style_set_pad_right(&style_battery, 15);
+
     // SD CARD
     lv_style_init(&style_storage);
-    //lv_style_set_text_color(&style_storage, lv_palette_main(LV_PALETTE_RED));
     lv_style_set_text_font(&style_storage, font_symbol);
     lv_style_set_align(&style_storage, LV_ALIGN_RIGHT_MID);
-    lv_style_set_pad_right(&style_storage, 15);
+    lv_style_set_pad_right(&style_storage, 45);
 
     // WIFI
     lv_style_init(&style_wifi);
-    //lv_style_set_text_color(&style_wifi, lv_palette_main(LV_PALETTE_GREY));
     lv_style_set_text_font(&style_wifi, font_symbol);
     lv_style_set_align(&style_wifi, LV_ALIGN_RIGHT_MID);
-    lv_style_set_pad_right(&style_wifi, 45);
+    lv_style_set_pad_right(&style_wifi, 65);
 
     // FOOTER MESSAGE & ANIMATION
     lv_anim_init(&anim_labelscroll);
@@ -123,6 +131,11 @@ static void create_header(lv_obj_t *parent)
     icon_storage = lv_label_create(panel_status);
     lv_label_set_text(icon_storage, LV_SYMBOL_SD_CARD);
     lv_obj_add_style(icon_storage, &style_storage, 0);  
+
+    // BATTERY
+    icon_battery = lv_label_create(panel_status);
+    lv_label_set_text(icon_battery, LV_SYMBOL_BATTERY_EMPTY);
+    lv_obj_add_style(icon_battery, &style_battery, 0);
 
     lv_obj_add_event_cb(panel_status, panel_status_eventhandler, LV_EVENT_CLICKED, NULL);
 }
