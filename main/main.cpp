@@ -7,9 +7,6 @@
 static const char *TAG = "lvgl_gui";
 #define ENABLE_TEST_TIMER   // Enable/Disable TIMER used for testing
 
-#define HEADER_HEIGHT 30 
-#define FOOTER_HEIGHT 30 
-
 #define LGFX_USE_V1
 #include <LovyanGFX.hpp>
 
@@ -28,10 +25,12 @@ static const char *TAG = "lvgl_gui";
 static void once_timer_callback(void* arg);
 static void periodic_timer_callback(void* arg);
 static void lv_update_battery(uint batval);
-#endif
 
 static bool wifi_on = false;
 static int battery_value = 0;
+#endif
+
+
 
 extern "C" { void app_main(); }
 
