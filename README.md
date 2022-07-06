@@ -27,14 +27,14 @@ git submodule update --init --recursive
 
 ## Separate build folder for ESP32 & ESP32-S3
 > Check settings in CMakeLists.txt [here](CMakeLists.txt#L8)
-### WT32-SC01 - ESP32
+#### WT32-SC01 - ESP32
 ```cmake
 # set target and build,flash,monitor
 idf.py -B build-esp32 set-target esp32 build
 idf.py -B build-esp32 -p COM6 flash monitor
 ```
 
-### FeatherS3 - ESP32-S3
+#### FeatherS3 - ESP32-S3
 ```cmake
 # set target and build,flash,monitor
 idf.py -B build-esp32s3 set-target esp32s3 build
@@ -42,7 +42,7 @@ idf.py -B build-esp32s3 -p COM3 app-flash monitor
 ```
 
 ## Setup custom lvgl config - ESP-IDF  
-> Check settings in CMakeLists.txt [here](CMakeLists.txt#L15)
+> Check settings in CMakeLists.txt [here](CMakeLists.txt#L16)
 ```cmake
 #LVGL custom config file setup
 idf_build_set_property(COMPILE_OPTIONS "-DLV_CONF_INCLUDE_SIMPLE=1" APPEND)
@@ -50,7 +50,7 @@ idf_build_set_property(COMPILE_OPTIONS "-I../main" APPEND)
 ```
 
 ## Display Compile Time Information
-Check settings in CMakeLists.txt [here](CMakeLists.txt#L24)  
+Check settings in CMakeLists.txt [here](CMakeLists.txt#L25)  
 ```cmake
 # Display Compile Time Information
 message(STATUS "--------------Compile Info------------")
