@@ -16,8 +16,17 @@
 > 3. [LovyanGFX](https://github.com/lovyan03/LovyanGFX) Display & Touch Driver   
 > 4. [LVGL 8.3.0](https://github.com/lvgl/lvgl) UI Widgets   
 
+
+## Get Started
+> Git clone and recursively update submodule
+```cmd
+git clone https://github.com/sukesh-ak/LVGL8x-SDSPI-Template.git
+cd LVGL8x-SDSPI-Template
+git submodule update --init --recursive
+```
+
 ## Separate build folder for ESP32 & ESP32-S3
-Check settings in CMakeLists.txt [here](CMakeLists.txt#L8)
+> Check settings in CMakeLists.txt [here](CMakeLists.txt#L8)
 ### WT32-SC01 - ESP32
 ```cmake
 # set target and build,flash,monitor
@@ -25,15 +34,15 @@ idf.py -B build-esp32 set-target esp32 build
 idf.py -B build-esp32 -p COM6 flash monitor
 ```
 
-### FEATHERS3 - ESP32-S3
+### FeatherS3 - ESP32-S3
 ```cmake
 # set target and build,flash,monitor
 idf.py -B build-esp32s3 set-target esp32s3 build
 idf.py -B build-esp32s3 -p COM3 app-flash monitor
 ```
 
-## Setup custom lvgl config file for ESP-IDF projects  
-Check settings in CMakeLists.txt [here](CMakeLists.txt#L15)
+## Setup custom lvgl config - ESP-IDF  
+> Check settings in CMakeLists.txt [here](CMakeLists.txt#L15)
 ```cmake
 #LVGL custom config file setup
 idf_build_set_property(COMPILE_OPTIONS "-DLV_CONF_INCLUDE_SIMPLE=1" APPEND)
@@ -57,5 +66,5 @@ message(STATUS "COMPILE_OPTIONS = ${COMPILE_OPTIONS}")
 message(STATUS "---------------------------------------")
 message(STATUS "CMAKE_SOURCE_DIR = ${CMAKE_SOURCE_DIR}")
 message(STATUS "CMAKE_BINARY_DIR = ${CMAKE_BINARY_DIR}")
-message(STATUS "---------By Sukesh Ashok Kumar---------")
+message(STATUS "---------------------------------------")
 ```
