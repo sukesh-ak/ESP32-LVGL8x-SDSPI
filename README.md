@@ -11,15 +11,16 @@ Some features included
 
 - Support for updating UI from different tasks [lvgl_acquire/lvgl_release](https://github.com/sukesh-ak/ESP32-LVGL8x-SDSPI/blob/fabf19438492d0fe8fc1d460bd52847740d6bbd0/main/main.cpp#L119)
 - UI code separation into [gui.hpp](https://github.com/sukesh-ak/ESP32-LVGL8x-SDSPI/blob/master/main/gui.hpp)
-- Same UI code which adapts to different resolutions
-- Supports shared SPI bus for SD Card
-- Readme explains how to have same project target different ESP32 controller.
-- Switch between devices using just a header file inclusion
-- Add your own controller/display with just a header change.
-- Shows battery meter animation using timer
+- Same UI code which adapts to different resolutions - [here](/main/gui.hpp#L101)
+- Supports shared SPI bus for SD Card - [here](/main/helper_storage.hpp)
+- This Readme below explains how to have same project target different ESP32 controller.
+- Switch between devices using just a header file inclusion - [here](/main/main.cpp#L15)
+- Add your own controller/display with just a header change - [here](/main/main.cpp#L15)
+- Shows battery meter animation using timer - [here](/main/main.cpp#L141)
 - Shows SD card status change with icon
-- Switch theme between Light & Dark
-- Scrolling long message in footer
+- Switch theme between Light & Dark - [here](/main/gui.hpp#L227)
+- Scrolling long message in footer - [here](/main/gui.hpp#L258)
+- Rotate screen 180deg [here](/main/main.cpp#L106)
 
 
 ### Demo of LVGL Widgets + SD SPI working together
