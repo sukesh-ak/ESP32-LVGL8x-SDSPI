@@ -1,5 +1,26 @@
-# LVGL8 + LOVYANGFX
+# ESP32/ESP32-S3 + ESP-IDF + LVGL8.X + LOVYANGFX
 Design adapts to all 3 screen resolution without any code changes.   
+
+3 sample configuration included already with just a header file to show how its done easily.
+
+1. Unexpected Maker FeatherS3 (ESP32-S3) + Adafruit 2.4" TFT Featherwing
+2. Unexpected Maker TinyS3 (ESP32-S3) + 1.3" TFT - ST7789 240x240
+3. Wireless Tag WT32-SC01 (3.5" TFT Touch Display)
+
+Some features included
+
+- Support for updating UI from different tasks [lvgl_acquire/lvgl_release](https://github.com/sukesh-ak/ESP32-LVGL8x-SDSPI/blob/fabf19438492d0fe8fc1d460bd52847740d6bbd0/main/main.cpp#L119)
+- UI code separation into [gui.hpp](https://github.com/sukesh-ak/ESP32-LVGL8x-SDSPI/blob/master/main/gui.hpp)
+- Same UI code which adapts to different resolutions
+- Supports shared SPI bus for SD Card
+- Readme explains how to have same project target different ESP32 controller.
+- Switch between devices using just a header file inclusion
+- Add your own controller/display with just a header change.
+- Shows battery meter animation using timer
+- Shows SD card status change with icon
+- Switch theme between Light & Dark
+- Scrolling long message in footer
+
 
 ### Demo of LVGL Widgets + SD SPI working together
 > 1. [Unexpected Maker FeatherS3](https://esp32s3.com/feathers3.html)   
