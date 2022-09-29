@@ -9,8 +9,8 @@ Design adapts to all 3 screen resolution without any code changes.
 
 Some features included
 
-- Support for updating UI from different tasks [lvgl_acquire/lvgl_release](https://github.com/sukesh-ak/ESP32-LVGL8x-SDSPI/blob/fabf19438492d0fe8fc1d460bd52847740d6bbd0/main/main.cpp#L119)
-- UI code separation into [gui.hpp](https://github.com/sukesh-ak/ESP32-LVGL8x-SDSPI/blob/master/main/gui.hpp)
+- Support for updating UI from different tasks [lvgl_acquire/lvgl_release](/main/main.cpp#L119)
+- UI code separation into [gui.hpp](/main/gui.hpp)
 - Same UI code which adapts to different resolutions - [here](/main/gui.hpp#L101)
 - Supports shared SPI bus for SD Card - [here](/main/helper_storage.hpp)
 - This Readme below explains how to have same project target different ESP32 controller.
