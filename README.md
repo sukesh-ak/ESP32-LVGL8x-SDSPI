@@ -47,7 +47,7 @@ Some features included
 ## Get Started
 > Git clone and recursively update submodule
 ```cmd
-git clone https://github.com/sukesh-ak/LVGL8x-SDSPI-Template.git
+git clone https://github.com/sukesh-ak/LVGL8x-SDSPI.git
 cd LVGL8x-SDSPI-Template
 git submodule update --init --recursive
 ```
