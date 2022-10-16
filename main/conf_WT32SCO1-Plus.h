@@ -1,5 +1,5 @@
 #define TOUCH_ENABLED
-#define SD_ENABLED
+//#define SD_ENABLED 
 
 // Portrait
 #define TFT_WIDTH   320
