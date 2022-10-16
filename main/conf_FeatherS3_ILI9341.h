@@ -1,6 +1,8 @@
 //#define TOUCH_ENABLED
 //#define RTOUCH
 #define SD_ENABLED
+#define SHARED_SPI 
+
 #define SPI_MODE 0
 
 #define TFT_MOSI    35 

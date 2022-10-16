@@ -2,17 +2,17 @@
 
 #define MOUNT_POINT "/sdcard"
 
-// #define PIN_NUM_MISO GPIO_NUM_37 
-// #define PIN_NUM_MOSI GPIO_NUM_35
-// #define PIN_NUM_CLK  GPIO_NUM_36
-#define PIN_NUM_CS   GPIO_NUM_33
+// #define SD_MISO GPIO_NUM_37 
+// #define SD_MOSI GPIO_NUM_35
+// #define SD_CLK  GPIO_NUM_36
+#define SD_CS   GPIO_NUM_33
 static sdmmc_card_t* sdcard;
 
 bool init_sdspi()
 {
     sdspi_device_config_t device_config = SDSPI_DEVICE_CONFIG_DEFAULT();
     device_config.host_id = SPI2_HOST;
-    device_config.gpio_cs = PIN_NUM_CS;  
+    device_config.gpio_cs = SD_CS;  
 
     ESP_LOGI(TAG, "Initializing SD card");
     sdmmc_host_t host = SDSPI_HOST_DEFAULT();
