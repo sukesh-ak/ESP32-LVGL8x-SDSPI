@@ -46,10 +46,14 @@ Some features included
 
 ## Get Started
 > Git clone and recursively update submodule
-```cmd
+```cmake
+# Clone repo and update submodules (LovyanGFX + LVGL)
 git clone https://github.com/sukesh-ak/LVGL8x-SDSPI.git
 cd LVGL8x-SDSPI-Template
 git submodule update --init --recursive
+
+# Update submodules (LovyanGFX + LVGL)
+git submodule foreach git pull
 ```
 
 ## Separate build folder for ESP32 & ESP32-S3
